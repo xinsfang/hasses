@@ -1,0 +1,16 @@
+SSE is implemented in chat.c. Entry function int sendmessages(char *buf).
+
+# server
+/usr/local/bin/hasses -p=8080 -cp=8085 -murl=/sse -nodaemon
+
+# consumer
+curl -v -H 'Connection: keep-alive' http://10.74.68.203:8080/sse?subscribe=xyz
+...
+id: 1550478870
+data: 123
+
+curl -v -H 'Connection: keep-alive' http://10.74.68.203:8080/sse?subscribe=xyz -H 'Last-Event-ID: 1550483706' # hasses does not support replay
+curl -v -H 'Connection: keep-alive' http://10.74.68.203:8080/sse?subscribe=x*
+
+# producer
+echo "xyz=123" | nc localhost 8085
